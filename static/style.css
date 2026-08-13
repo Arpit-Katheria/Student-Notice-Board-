@@ -90,3 +90,29 @@ textarea{
     height:100px;
     resize:none;
 }
+.actions{
+    margin-top:15px;
+}
+
+.edit,.delete{
+    text-decoration:none;
+    padding:6px 12px;
+    color:white;
+    border-radius:4px;
+    font-size:14px;
+}
+
+.edit{
+    background:#16a34a;
+}
+
+.delete{
+    background:#dc2626;
+    margin-left:8px;
+}
+
+.error{
+    color:red;
+    margin-bottom:10px;
+    text-align:center;
+}

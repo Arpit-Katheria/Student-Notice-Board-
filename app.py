@@ -71,3 +71,82 @@ def add():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
+from flask import session
+
+app.secret_key = "smartnotice123"
+
+# ---------- LOGIN ----------
+
+@app.route("/login", methods=["GET","POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        if username == "admin" and password == "admin123":
+            session["admin"] = True
+            return redirect("/admin")
+
+        return render_template("login.html", error="Invalid Credentials")
+
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
+
+
+# ---------- DELETE ----------
+
+@app.route("/delete/<int:id>")
+def delete(id):
+    if "admin" not in session:
+        return redirect("/login")
+
+    conn = sqlite3.connect("notice.db")
+    cur = conn.cursor()
+
+    cur.execute("DELETE FROM notices WHERE id=?", (id,))
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/admin")
+
+
+# ---------- EDIT ----------
+
+@app.route("/edit/<int:id>", methods=["GET","POST"])
+def edit(id):
+    if "admin" not in session:
+        return redirect("/login")
+
+    conn = sqlite3.connect("notice.db")
+    cur = conn.cursor()
+
+    if request.method == "POST":
+
+        title = request.form["title"]
+        description = request.form["description"]
+        category = request.form["category"]
+
+        cur.execute("""
+        UPDATE notices
+        SET title=?, description=?, category=?
+        WHERE id=?
+        """,(title,description,category,id))
+
+        conn.commit()
+        conn.close()
+
+        return redirect("/admin")
+
+    cur.execute("SELECT * FROM notices WHERE id=?", (id,))
+    notice = cur.fetchone()
+
+    conn.close()
+
+    return render_template("edit.html", notice=notice)

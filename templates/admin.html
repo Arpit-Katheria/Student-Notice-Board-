@@ -1,29 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% for notice in notices %}
 
-<header>
-    <h2>Admin Dashboard</h2>
-    <a href="/">Home</a>
-</header>
+<div class="notice">
 
-<div class="container">
+    <h3>{{ notice[1] }}</h3>
 
-    <a class="add-btn" href="/add">+ Add Notice</a>
+    <p>{{ notice[2] }}</p>
 
-    {% for notice in notices %}
-    <div class="notice">
-        <h3>{{ notice[1] }}</h3>
-        <p>{{ notice[2] }}</p>
-        <span>{{ notice[3] }}</span>
+    <span>{{ notice[3] }}</span>
+
+    <div class="actions">
+
+        <a href="/edit/{{ notice[0] }}" class="edit">Edit</a>
+
+        <a href="/delete/{{ notice[0] }}" class="delete">Delete</a>
+
     </div>
-    {% endfor %}
 
 </div>
 
-</body>
-</html>
+{% endfor %}

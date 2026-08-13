@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Notice</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="login-box">
+
+<h2>Edit Notice</h2>
+
+<form method="POST">
+
+<input
+type="text"
+name="title"
+value="{{ notice[1] }}"
+required>
+
+<textarea
+name="description"
+required>{{ notice[2] }}</textarea>
+
+<select name="category">
+
+<option {% if notice[3]=='Exam' %}selected{% endif %}>Exam</option>
+
+<option {% if notice[3]=='Event' %}selected{% endif %}>Event</option>
+
+<option {% if notice[3]=='Placement' %}selected{% endif %}>Placement</option>
+
+<option {% if notice[3]=='Holiday' %}selected{% endif %}>Holiday</option>
+
+</select>
+
+<button type="submit">Update Notice</button>
+
+</form>
+
+</div>
+
+</body>
+</html>
