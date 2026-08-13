@@ -1,0 +1,92 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f6f8;
+}
+
+header{
+    background:#1e3a8a;
+    color:white;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+header a{
+    color:white;
+    text-decoration:none;
+}
+
+.container{
+    width:80%;
+    margin:30px auto;
+}
+
+.notice{
+    background:white;
+    padding:18px;
+    margin-bottom:15px;
+    border-left:5px solid #2563eb;
+    border-radius:6px;
+}
+
+.notice h4{
+    margin-bottom:8px;
+}
+
+.notice span{
+    background:#dbeafe;
+    color:#1d4ed8;
+    padding:4px 10px;
+    border-radius:4px;
+    font-size:13px;
+}
+
+.login-box{
+    width:320px;
+    margin:100px auto;
+    background:white;
+    padding:25px;
+    border-radius:8px;
+}
+
+.login-box input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+}
+
+.login-box button{
+    width:100%;
+    padding:10px;
+    background:#1e3a8a;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+.add-btn{
+    display:inline-block;
+    margin-bottom:20px;
+    background:#2563eb;
+    color:white;
+    padding:10px 16px;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+textarea, select{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+}
+
+textarea{
+    height:100px;
+    resize:none;
+}

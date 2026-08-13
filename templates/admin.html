@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h2>Admin Dashboard</h2>
+    <a href="/">Home</a>
+</header>
+
+<div class="container">
+
+    <a class="add-btn" href="/add">+ Add Notice</a>
+
+    {% for notice in notices %}
+    <div class="notice">
+        <h3>{{ notice[1] }}</h3>
+        <p>{{ notice[2] }}</p>
+        <span>{{ notice[3] }}</span>
+    </div>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

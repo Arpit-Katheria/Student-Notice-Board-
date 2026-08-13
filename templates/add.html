@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Notice</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="login-box">
+    <h2>New Notice</h2>
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="title"
+            placeholder="Notice title"
+            required
+        >
+
+        <textarea
+            name="description"
+            placeholder="Description"
+            required
+        ></textarea>
+
+        <select name="category">
+            <option>Exam</option>
+            <option>Event</option>
+            <option>Placement</option>
+            <option>Holiday</option>
+        </select>
+
+        <button type="submit">Publish</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
