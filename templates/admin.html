@@ -1,21 +1,40 @@
-{% for notice in notices %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-<div class="notice">
+<header>
+    <h2>Admin Dashboard</h2>
+    <a href="/logout">Logout</a>
+</header>
 
-    <h3>{{ notice[1] }}</h3>
+<div class="container">
 
-    <p>{{ notice[2] }}</p>
+    <a href="/add" class="add-btn">+ Add Notice</a>
 
-    <span>{{ notice[3] }}</span>
+    {% for notice in notices %}
 
-    <div class="actions">
+    <div class="notice">
 
-        <a href="/edit/{{ notice[0] }}" class="edit">Edit</a>
+        <h3>{{ notice[1] }}</h3>
 
-        <a href="/delete/{{ notice[0] }}" class="delete">Delete</a>
+        <p>{{ notice[2] }}</p>
+
+        <span>{{ notice[3] }}</span>
+
+        <div class="actions">
+            <a class="edit" href="/edit/{{ notice[0] }}">Edit</a>
+            <a class="delete" href="/delete/{{ notice[0] }}">Delete</a>
+        </div>
 
     </div>
 
+    {% endfor %}
+
 </div>
 
-{% endfor %}
+</body>
+</html>

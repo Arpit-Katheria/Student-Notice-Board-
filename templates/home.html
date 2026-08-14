@@ -1,38 +1,39 @@
-<! DOCTYPE html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Smart Notice Board</title>
-        <link rel="stylesheet" href="{{ url_for('static',filename='style.css'))}}">
-    </head>
-    <body>
-        <header>
-            <h2>SMART NOITCE BOARD</h2>
-            <a href="/login">Admin Login</a>
-        </header>
+<head>
+    <title>Smart Notice Board</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-    <div class="container">
-        <h3>Latest Notices</h3>
+<header>
+    <h2>SMART NOTICE BOARD</h2>
+    <a href="/login">Admin Login</a>
+</header>
 
-       {% for notice in notices %}
-<        div class="notice">
-          <h4>{{ notice[1] }}</h4>
-          <p>{{ notice[2] }}</p>
-          <span>{{ notice[3] }}</span>
-      </div>
-      {% endfor %}
+<div class="container">
 
-        <div class="notice">
-            <h4>Mid Semester Examination</h4>
-            <p>Exams will begin from 25 August 2026.</p>
-            <span>Exam</span>
-        </div>
+    <h2>Latest Notices</h2>
 
-        <div class="notice">
-            <h4>Independence Day Event</h4>
-            <p>All Students are invited to  the college auditorium.</p>
-            <span>Event</span>
-        </div>
+    {% for notice in notices %}
+
+    <div class="notice">
+
+        <h3>{{ notice[1] }}</h3>
+
+        <p>{{ notice[2] }}</p>
+
+        <span>{{ notice[3] }}</span>
 
     </div>
+
+    {% else %}
+
+    <p>No notices available.</p>
+
+    {% endfor %}
+
+</div>
+
 </body>
 </html>
