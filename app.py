@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, session
+from datetime import datetime
 import sqlite3
 
 app = Flask(__name__)
@@ -96,12 +97,13 @@ def add():
 
         conn = sqlite3.connect("notice.db")
         cur = conn.cursor()
+        current_time = datetime.now().strftime("%d %b %Y • %I:%M %p")
 
+       
         cur.execute(
-            "INSERT INTO notices(title,description,category) VALUES(?,?,?)",
-            (title, description, category)
+        "INSERT INTO notices(title, description, category, created_at) VALUES (?, ?, ?, ?)",
+         (title, description, category, current_time)
         )
-
         conn.commit()
         conn.close()
 
