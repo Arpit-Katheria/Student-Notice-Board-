@@ -1,52 +1,398 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Smart Notice Board</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<title>Smart Notice Board</title>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
+
 </head>
+
 <body>
 
 <header>
-    
-    <h2>SMART NOTICE BOARD</h2>
-    <a href="/login">Admin Login</a>
+
+<h2>
+SMART NOTICE BOARD
+</h2>
+
+<div class="header-actions">
+
+<button
+    class="theme-btn"
+    id="themeToggle"
+>
+🌙
+</button>
+
+<button
+    class="notify-btn"
+    id="notificationButton"
+>
+🔔 Enable Notifications
+</button>
+
+<a href="/login">
+Admin Login
+</a>
+
+</div>
+
 </header>
-<div class="container">
-    <h1>Latest Notices</h1>
-    <p>Department announcements, exams and events</p>
+
+
+{% if ticker %}
+
+<div class="ticker">
+
+<div class="ticker-label">
+📢 IMPORTANT
 </div>
 
-<div class="container">
+<div class="ticker-content">
 
-    <h2>Latest Notices</h2>
+{% for notice in ticker %}
 
-    {% for notice in notices %}
+<a href="/notice/{{ notice['id'] }}">
 
-    <div class="notice">
+{{ notice['title'] }}
 
-        <h3>{{ notice[1] }}</h3>
+</a>
 
-        <p>{{ notice[2] }}</p>
+{% if not loop.last %}
+<span>•</span>
+{% endif %}
 
-        <span>{{ notice[3] }}</span>
-         <div class="notice-header">
-          <span class="category">{{ notice[3] }}</span>
-          <small>{{ notice[4] }}</small>
-           </div>
-
-         <h3>{{ notice[1] }}</h3>
-         <p>{{ notice[2] }}</p>
-
-    </div>
-
-    {% else %}
-
-    <p>No notices available.</p>
-
-    {% endfor %}
+{% endfor %}
 
 </div>
 
+</div>
+
+{% endif %}
+
+
+<div class="container public-container">
+
+
+<div class="public-hero">
+
+<span class="eyebrow">
+CAMPUS ANNOUNCEMENTS
+</span>
+
+<h1>
+Latest Notices
+</h1>
+
+<p>
+Stay updated with exams, events, placements and important announcements.
+</p>
+
+</div>
+
+
+{% if featured %}
+
+<h2 class="section-title">
+⭐ Featured Notice
+</h2>
+
+<div class="featured-grid">
+
+{% for notice in featured[:2] %}
+
+<a
+    href="/notice/{{ notice['id'] }}"
+    class="featured-card notice-{{ notice['priority']|lower }}"
+>
+
+<span class="featured-label">
+⭐ FEATURED
+</span>
+
+<h2>
+{{ notice['title'] }}
+</h2>
+
+<p>
+{{ notice['description'] }}
+</p>
+
+<div>
+
+{{ notice['category'] }}
+
+•
+
+{{ notice['priority'] }}
+
+</div>
+
+</a>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+
+<div class="toolbar public-toolbar">
+
+<div class="search-box">
+
+<span>⌕</span>
+
+<input
+    type="search"
+    id="noticeSearch"
+    placeholder="Search notices..."
+>
+
+</div>
+
+
+<select id="categoryFilter">
+
+<option value="all">
+All Categories
+</option>
+
+<option>Exam</option>
+<option>Event</option>
+<option>Placement</option>
+<option>Holiday</option>
+<option>Sports</option>
+<option>Cultural</option>
+<option>Workshop</option>
+<option>Seminar</option>
+<option>Alert</option>
+
+</select>
+
+
+<select id="departmentFilter">
+
+<option value="all">
+All Departments
+</option>
+
+<option>CSE</option>
+<option>IT</option>
+<option>ECE</option>
+<option>EE</option>
+<option>ME</option>
+<option>CE</option>
+<option>MBA</option>
+<option>MCA</option>
+
+</select>
+
+
+<select id="priorityFilter">
+
+<option value="all">
+All Priorities
+</option>
+
+<option>Normal</option>
+<option>Important</option>
+<option>Urgent</option>
+
+</select>
+
+
+<select id="sortNotices">
+
+<option value="newest">
+Newest
+</option>
+
+<option value="priority">
+Highest Priority
+</option>
+
+<option value="title">
+Title A-Z
+</option>
+
+</select>
+
+</div>
+
+
+<div id="noticeList">
+
+{% for notice in notices %}
+
+<article
+class="notice notice-{{ notice['priority']|lower }} notice-item"
+
+data-title="{{ notice['title']|lower }}"
+
+data-description="{{ notice['description']|lower }}"
+
+data-category="{{ notice['category'] }}"
+
+data-department="{{ notice['department'] }}"
+
+data-priority="{{ notice['priority'] }}"
+
+data-created="{{ notice['created_timestamp'] }}"
+>
+
+
+<div class="notice-header">
+
+<div class="notice-badges">
+
+{% if notice['pinned'] %}
+<span class="pin-badge">
+📌 Pinned
+</span>
+{% endif %}
+
+<span class="category">
+{{ notice['category'] }}
+</span>
+
+<span class="priority priority-{{ notice['priority']|lower }}">
+{{ notice['priority'] }}
+</span>
+
+{% if notice['is_new'] %}
+<span class="new-badge">
+NEW
+</span>
+{% endif %}
+
+</div>
+
+<small>
+{{ notice['created_at'] }}
+</small>
+
+</div>
+
+
+<h3>
+{{ notice['title'] }}
+</h3>
+
+
+<p>
+{{ notice['description'] }}
+</p>
+
+
+<div class="audience-row">
+
+<span>
+🏫 {{ notice['department'] }}
+</span>
+
+<span>
+👥 {{ notice['audience'] }}
+</span>
+
+</div>
+
+
+{% if notice['expiry_date'] %}
+
+<div class="public-expiry">
+
+📅 Available until
+<strong>
+{{ notice['expiry_date'] }}
+</strong>
+
+</div>
+
+{% endif %}
+
+
+{% if notice['attachment'] %}
+
+<a
+href="{{ url_for(
+'static',
+filename='uploads/' + notice['attachment']
+) }}"
+class="attachment-btn"
+target="_blank"
+>
+📎 View Attachment
+</a>
+
+{% endif %}
+
+
+<a
+href="/notice/{{ notice['id'] }}"
+class="read-more"
+>
+Read Full Notice →
+</a>
+
+
+</article>
+
+{% else %}
+
+<div class="empty-state">
+
+<div>📋</div>
+
+<h3>
+No active notices
+</h3>
+
+<p>
+There are currently no announcements available.
+</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+
+<div
+id="noSearchResults"
+class="empty-state hidden"
+>
+
+<div>🔍</div>
+
+<h3>
+No matching notices
+</h3>
+
+<p>
+Try changing your search or filters.
+</p>
+
+</div>
+
+</div>
+
+
+<footer>
+
+Smart Notice Board • Campus Information System
+
+</footer>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
+
 </html>

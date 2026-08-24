@@ -1,55 +1,244 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Add Notice</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <title>Create Notice</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
 </head>
+
 <body>
+
+<header>
+
+    <h2>Smart Notice Board</h2>
+
+    <a href="/admin">
+        Dashboard
+    </a>
+
+</header>
+
+
+<div class="form-page">
 
 <div class="login-box">
 
-    <h2>Add Notice</h2>
+<div class="form-heading">
 
-    <form method="POST">
+    <span class="form-icon">＋</span>
 
-        <input
-            type="text"
-            name="title"
-            placeholder="Notice Title"
-            required>
-
-        <textarea
-            name="description"
-            placeholder="Description"
-            required></textarea>
-
-        <select name="category">
-            <option>Exam</option>
-            <option>Event</option>
-            <option>Placement</option>
-            <option>Holiday</option>
-            <option>Other</option>
-            <option>Sports</option>
-            <option>Cultural</option>   
-            <option>Workshop</option>
-            <option>Seminar</option>
-            <option>Conference</option>
-            <option>Training</option>
-            <option>Meeting</option>
-            <option>Announcement</option>
-            <option>Notice</option>
-            <option>Alert</option>
-            <option>Reminder</option>
-            <option>Update</option>
-            <option>News</option>
-            <option>Information</option>f
-        </select>
-
-        <button type="submit">Publish</button>
-
-    </form>
+    <div>
+        <h2>Create Notice</h2>
+        <p>Publish a new announcement</p>
+    </div>
 
 </div>
 
+
+<form method="POST" enctype="multipart/form-data">
+
+
+<label>Notice Title</label>
+
+<input
+    type="text"
+    name="title"
+    placeholder="Enter notice title"
+    required
+>
+
+
+<label>Description</label>
+
+<textarea
+    name="description"
+    placeholder="Write notice details..."
+    required
+></textarea>
+
+
+<div class="form-grid">
+
+<div>
+
+<label>Category</label>
+
+<select name="category" required>
+
+<option>Exam</option>
+<option>Event</option>
+<option>Placement</option>
+<option>Holiday</option>
+<option>Sports</option>
+<option>Cultural</option>
+<option>Workshop</option>
+<option>Seminar</option>
+<option>Conference</option>
+<option>Training</option>
+<option>Meeting</option>
+<option>Announcement</option>
+<option>Alert</option>
+<option>Reminder</option>
+<option>Update</option>
+<option>News</option>
+<option>Information</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>Priority</label>
+
+<select name="priority">
+
+<option>Normal</option>
+<option>Important</option>
+<option>Urgent</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="form-grid">
+
+<div>
+
+<label>Department</label>
+
+<select name="department">
+
+<option>All Departments</option>
+<option>CSE</option>
+<option>IT</option>
+<option>ECE</option>
+<option>EE</option>
+<option>ME</option>
+<option>CE</option>
+<option>MBA</option>
+<option>MCA</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>Target Audience</label>
+
+<select name="audience">
+
+<option>All Students</option>
+<option>1st Year</option>
+<option>2nd Year</option>
+<option>3rd Year</option>
+<option>4th Year</option>
+<option>Faculty</option>
+<option>Staff</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="form-grid">
+
+<div>
+
+<label>Publish Date & Time</label>
+
+<input
+    type="datetime-local"
+    name="publish_at"
+>
+
+</div>
+
+
+<div>
+
+<label>Expiry Date</label>
+
+<input
+    type="date"
+    name="expiry_date"
+    min="{{ now_date }}"
+>
+
+</div>
+
+</div>
+
+
+<label>Attachment</label>
+
+<input
+    type="file"
+    name="attachment"
+>
+
+<p class="field-help">
+PDF, DOC, DOCX, XLS, XLSX, JPG, PNG and TXT supported.
+</p>
+
+
+<div class="checkbox-row">
+
+<label class="check-label">
+
+<input
+    type="checkbox"
+    name="pinned"
+>
+
+📌 Pin this notice
+
+</label>
+
+
+<label class="check-label">
+
+<input
+    type="checkbox"
+    name="featured"
+>
+
+⭐ Feature this notice
+
+</label>
+
+</div>
+
+
+<button type="submit">
+    Publish Notice
+</button>
+
+
+</form>
+
+</div>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
 </body>
+
 </html>

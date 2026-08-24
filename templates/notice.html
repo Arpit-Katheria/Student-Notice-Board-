@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>{{ notice['title'] }}</title>
+
+<link
+rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}"
+>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>
+Smart Notice Board
+</h2>
+
+<a href="/">
+← Back to Notices
+</a>
+
+</header>
+
+
+<div class="container notice-page">
+
+<article
+class="notice notice-{{ notice['priority']|lower }}"
+>
+
+
+<div class="notice-header">
+
+<div class="notice-badges">
+
+{% if notice['featured'] %}
+<span class="pin-badge">
+⭐ Featured
+</span>
+{% endif %}
+
+{% if notice['pinned'] %}
+<span class="pin-badge">
+📌 Pinned
+</span>
+{% endif %}
+
+<span class="category">
+{{ notice['category'] }}
+</span>
+
+<span class="priority priority-{{ notice['priority']|lower }}">
+{{ notice['priority'] }}
+</span>
+
+</div>
+
+<small>
+{{ notice['created_at'] }}
+</small>
+
+</div>
+
+
+<h1>
+{{ notice['title'] }}
+</h1>
+
+
+<p class="full-description">
+{{ notice['description'] }}
+</p>
+
+
+<div class="notice-details">
+
+<div>
+<strong>Department</strong>
+<span>{{ notice['department'] }}</span>
+</div>
+
+<div>
+<strong>Audience</strong>
+<span>{{ notice['audience'] }}</span>
+</div>
+
+<div>
+<strong>Priority</strong>
+<span>{{ notice['priority'] }}</span>
+</div>
+
+<div>
+<strong>Views</strong>
+<span>👁️ {{ notice['views'] }}</span>
+</div>
+
+</div>
+
+
+{% if notice['expiry_date'] %}
+
+<div class="public-expiry">
+📅 Available until
+<strong>
+{{ notice['expiry_date'] }}
+</strong>
+</div>
+
+{% endif %}
+
+
+{% if notice['attachment'] %}
+
+<a
+class="attachment-btn"
+target="_blank"
+href="{{ url_for(
+'static',
+filename='uploads/' + notice['attachment']
+) }}"
+>
+📎 Open Attachment
+</a>
+
+{% endif %}
+
+
+</article>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

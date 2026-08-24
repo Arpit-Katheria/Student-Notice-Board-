@@ -1,54 +1,282 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Edit Notice</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<title>Edit Notice</title>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
+
 </head>
+
 <body>
+
+<header>
+
+<h2>Smart Notice Board</h2>
+
+<a href="/admin">
+Dashboard
+</a>
+
+</header>
+
+
+<div class="form-page">
 
 <div class="login-box">
 
-    <h2>Edit Notice</h2>
+<div class="form-heading">
 
-    <form method="POST">
+<span class="form-icon">✎</span>
 
-        <input
-            type="text"
-            name="title"
-            value="{{ notice[1] }}"
-            required>
+<div>
 
-        <textarea
-            name="description"
-            required>{{ notice[2] }}</textarea>
+<h2>Edit Notice</h2>
 
-        <select name="category">
-            <option {% if notice[3]=='Exam' %}selected{% endif %}>Exam</option>
-            <option {% if notice[3]=='Event' %}selected{% endif %}>Event</option>
-            <option {% if notice[3]=='Placement' %}selected{% endif %}>Placement</option>
-            <option {% if notice[3]=='Holiday' %}selected{% endif %}>Holiday</option>
-            <option {% if notice[3]=='Other' %}selected{% endif %}>Other</option>
-            <option {% if notice[3]=='Sports' %}selected{% endif %}>Sports</option>
-            <option {% if notice[3]=='Cultural' %}selected{% endif %}>Cultural</option>
-            <option {% if notice[3]=='Workshop' %}selected{% endif %}>Workshop</option>
-            <option {% if notice[3]=='Seminar' %}selected{% endif %}>Seminar</option>
-            <option {% if notice[3]=='Conference' %}selected{% endif %}>Conference</option>
-            <option {% if notice[3]=='Training' %}selected{% endif %}>Training</option>
-            <option {% if notice[3]=='Meeting' %}selected{% endif %}>Meeting</option>
-            <option {% if notice[3]=='Announcement' %}selected{% endif %}>Announcement</option>
-            <option {% if notice[3]=='Notice' %}selected{% endif %}>Notice</option>
-            <option {% if notice[3]=='Alert' %}selected{% endif %}>Alert</option>
-            <option {% if notice[3]=='Reminder' %}selected{% endif %}>Reminder</option>
-            <option {% if notice[3]=='Update' %}selected{% endif %}>Update</option>
-            <option {% if notice[3]=='News' %}selected{% endif %}>News</option>
-            <option {% if notice[3]=='Information' %}selected{% endif %}>Information</option>
-        </select>
-
-        <button type="submit">Update</button>
-
-    </form>
+<p>Update announcement details</p>
 
 </div>
 
+</div>
+
+
+<form method="POST" enctype="multipart/form-data">
+
+
+<label>Notice Title</label>
+
+<input
+    type="text"
+    name="title"
+    value="{{ notice['title'] }}"
+    required
+>
+
+
+<label>Description</label>
+
+<textarea
+    name="description"
+    required
+>{{ notice['description'] }}</textarea>
+
+
+<div class="form-grid">
+
+<div>
+
+<label>Category</label>
+
+<select name="category">
+
+{% for category in [
+'Exam','Event','Placement','Holiday',
+'Sports','Cultural','Workshop','Seminar',
+'Conference','Training','Meeting',
+'Announcement','Alert','Reminder',
+'Update','News','Information','Other'
+] %}
+
+<option
+    value="{{ category }}"
+    {% if notice['category'] == category %}
+    selected
+    {% endif %}
+>
+{{ category }}
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>Priority</label>
+
+<select name="priority">
+
+<option
+{% if notice['priority'] == 'Normal' %}
+selected
+{% endif %}
+>
+Normal
+</option>
+
+<option
+{% if notice['priority'] == 'Important' %}
+selected
+{% endif %}
+>
+Important
+</option>
+
+<option
+{% if notice['priority'] == 'Urgent' %}
+selected
+{% endif %}
+>
+Urgent
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="form-grid">
+
+<div>
+
+<label>Department</label>
+
+<select name="department">
+
+{% for department in [
+'All Departments','CSE','IT','ECE',
+'EE','ME','CE','MBA','MCA'
+] %}
+
+<option
+value="{{ department }}"
+{% if notice['department'] == department %}
+selected
+{% endif %}
+>
+{{ department }}
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>Target Audience</label>
+
+<select name="audience">
+
+{% for audience in [
+'All Students','1st Year','2nd Year',
+'3rd Year','4th Year','Faculty','Staff'
+] %}
+
+<option
+value="{{ audience }}"
+{% if notice['audience'] == audience %}
+selected
+{% endif %}
+>
+{{ audience }}
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="form-grid">
+
+<div>
+
+<label>Publish Date & Time</label>
+
+<input
+    type="datetime-local"
+    name="publish_at"
+    value="{{ notice['publish_at'] or '' }}"
+>
+
+</div>
+
+
+<div>
+
+<label>Expiry Date</label>
+
+<input
+    type="date"
+    name="expiry_date"
+    value="{{ notice['expiry_date'] or '' }}"
+>
+
+</div>
+
+</div>
+
+
+<label>Replace Attachment</label>
+
+<input
+    type="file"
+    name="attachment"
+>
+
+
+{% if notice['attachment'] %}
+
+<p class="field-help">
+
+Current attachment:
+<strong>
+{{ notice['attachment'] }}
+</strong>
+
+</p>
+
+{% endif %}
+
+
+<div class="checkbox-row">
+
+<label class="check-label">
+
+<input
+    type="checkbox"
+    name="featured"
+    {% if notice['featured'] %}
+    checked
+    {% endif %}
+>
+
+⭐ Featured
+
+</label>
+
+</div>
+
+
+<button type="submit">
+    Save Changes
+</button>
+
+
+</form>
+
+</div>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
 </body>
+
 </html>

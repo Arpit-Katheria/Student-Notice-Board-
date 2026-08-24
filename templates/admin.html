@@ -1,47 +1,690 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<title>Admin Dashboard</title>
+
+<link
+rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}"
+>
+
 </head>
+
 <body>
 
 <header>
-    <h2>Admin Dashboard</h2>
-    <a href="/logout">Logout</a>
+
+<h2>
+Admin Dashboard
+</h2>
+
+<div class="header-actions">
+
+<a href="/">
+Public Board
+</a>
+
+<button
+class="theme-btn"
+id="themeToggle"
+>
+🌙
+</button>
+
+<a href="/logout">
+Logout
+</a>
+
+</div>
+
 </header>
+
 
 <div class="container">
 
-    <a href="/add" class="add-btn">+ Add Notice</a>
 
-    {% for notice in notices %}
+<div class="dashboard-top">
 
-    <div class="notice">
+<div>
 
-        <h3>{{ notice[1] }}</h3>
+<span class="eyebrow">
+MANAGEMENT PANEL
+</span>
 
-        <p>{{ notice[2] }}</p>
+<h1>
+Notice Overview
+</h1>
 
-        <span>{{ notice[3] }}</span>
-        <div class="notice-header">
-    <span class="category">{{ notice[3] }}</span>
-    <small>{{ notice[4] }}</small>
-</div>
-
-<h3>{{ notice[1] }}</h3>
-<p>{{ notice[2] }}</p>
-
-        <div class="actions">
-            <a class="edit" href="/edit/{{ notice[0] }}">Edit</a>
-            <a class="delete" href="/delete/{{ notice[0] }}">Delete</a>
-        </div>
-
-    </div>
-
-    {% endfor %}
+<p>
+Manage announcements, schedules and priorities.
+</p>
 
 </div>
+
+
+<a
+href="/add"
+class="add-btn"
+>
++ Add Notice
+</a>
+
+</div>
+
+
+<!-- STATISTICS -->
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<div class="stat-icon blue">
+📋
+</div>
+
+<div>
+
+<span>Total Notices</span>
+
+<strong>
+{{ total }}
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-icon green">
+✓
+</div>
+
+<div>
+
+<span>Active</span>
+
+<strong>
+{{ active }}
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-icon orange">
+!
+</div>
+
+<div>
+
+<span>Important</span>
+
+<strong>
+{{ important }}
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-icon red">
+⚠
+</div>
+
+<div>
+
+<span>Urgent</span>
+
+<strong>
+{{ urgent }}
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="mini-stats">
+
+<span>
+Normal: <b>{{ normal }}</b>
+</span>
+
+<span>
+Scheduled: <b>{{ scheduled }}</b>
+</span>
+
+<span>
+Expired: <b>{{ expired }}</b>
+</span>
+
+<span>
+Archived: <b>{{ archived }}</b>
+</span>
+
+<span>
+Trash: <b>{{ trashed }}</b>
+</span>
+
+<span>
+👁️ Views: <b>{{ total_views }}</b>
+</span>
+
+</div>
+
+
+<!-- ANALYTICS -->
+
+<div class="analytics-card">
+
+<h2>
+📊 Notice Analytics
+</h2>
+
+<div class="analytics-grid">
+
+<div>
+
+<span>Total Views</span>
+
+<strong>
+{{ total_views }}
+</strong>
+
+</div>
+
+<div>
+
+<span>Active</span>
+
+<strong>
+{{ active }}
+</strong>
+
+</div>
+
+<div>
+
+<span>Scheduled</span>
+
+<strong>
+{{ scheduled }}
+</strong>
+
+</div>
+
+<div>
+
+<span>Expired</span>
+
+<strong>
+{{ expired }}
+</strong>
+
+</div>
+
+</div>
+
+
+<h3>
+Most Viewed Notices
+</h3>
+
+
+{% for notice in most_viewed %}
+
+<div class="view-row">
+
+<span>
+{{ notice['title'] }}
+</span>
+
+<strong>
+👁️ {{ notice['views'] }}
+</strong>
+
+</div>
+
+{% else %}
+
+<p class="field-help">
+No views recorded yet.
+</p>
+
+{% endfor %}
+
+</div>
+
+
+<!-- SEARCH -->
+
+<div class="toolbar">
+
+<div class="search-box">
+
+<span>⌕</span>
+
+<input
+type="search"
+id="noticeSearch"
+placeholder="Search notices..."
+>
+
+</div>
+
+
+<select id="categoryFilter">
+
+<option value="all">
+All Categories
+</option>
+
+<option>Exam</option>
+<option>Event</option>
+<option>Placement</option>
+<option>Holiday</option>
+<option>Sports</option>
+<option>Cultural</option>
+<option>Workshop</option>
+<option>Seminar</option>
+<option>Alert</option>
+
+</select>
+
+
+<select id="departmentFilter">
+
+<option value="all">
+All Departments
+</option>
+
+<option>CSE</option>
+<option>IT</option>
+<option>ECE</option>
+<option>EE</option>
+<option>ME</option>
+<option>CE</option>
+<option>MBA</option>
+<option>MCA</option>
+
+</select>
+
+
+<select id="priorityFilter">
+
+<option value="all">
+All Priorities
+</option>
+
+<option>Normal</option>
+<option>Important</option>
+<option>Urgent</option>
+
+</select>
+
+
+<select id="statusFilter">
+
+<option value="all">
+All Status
+</option>
+
+<option>Active</option>
+<option>Scheduled</option>
+<option>Expired</option>
+<option>Archived</option>
+<option>Trashed</option>
+
+</select>
+
+
+<select id="sortNotices">
+
+<option value="smart">
+Smart Score
+</option>
+
+<option value="newest">
+Newest
+</option>
+
+<option value="priority">
+Highest Priority
+</option>
+
+<option value="views">
+Most Viewed
+</option>
+
+<option value="title">
+Title A-Z
+</option>
+
+</select>
+
+</div>
+
+
+<!-- NOTICES -->
+
+<div id="noticeList">
+
+{% for notice in notices %}
+
+<div
+class="notice notice-{{ notice['priority']|lower }} notice-item"
+
+data-title="{{ notice['title']|lower }}"
+
+data-description="{{ notice['description']|lower }}"
+
+data-category="{{ notice['category'] }}"
+
+data-department="{{ notice['department'] }}"
+
+data-priority="{{ notice['priority'] }}"
+
+data-status="{{ notice['status'] }}"
+
+data-created="{{ notice['created_timestamp'] }}"
+
+data-views="{{ notice['views'] }}"
+
+data-score="{{ notice['smart_score'] }}"
+>
+
+
+<div class="notice-header">
+
+<div class="notice-badges">
+
+{% if notice['featured'] %}
+<span class="pin-badge">
+⭐ Featured
+</span>
+{% endif %}
+
+{% if notice['pinned'] %}
+<span class="pin-badge">
+📌 Pinned
+</span>
+{% endif %}
+
+<span class="category">
+{{ notice['category'] }}
+</span>
+
+<span class="priority priority-{{ notice['priority']|lower }}">
+{{ notice['priority'] }}
+</span>
+
+{% if notice['is_new'] %}
+<span class="new-badge">
+NEW
+</span>
+{% endif %}
+
+</div>
+
+<small>
+{{ notice['created_at'] }}
+</small>
+
+</div>
+
+
+<h3>
+{{ notice['title'] }}
+</h3>
+
+
+<p>
+{{ notice['description'] }}
+</p>
+
+
+<div class="audience-row">
+
+<span>
+🏫 {{ notice['department'] }}
+</span>
+
+<span>
+👥 {{ notice['audience'] }}
+</span>
+
+<span>
+🤖 Score: {{ notice['smart_score'] }}
+</span>
+
+<span>
+👁️ {{ notice['views'] }}
+</span>
+
+</div>
+
+
+{% if notice['publish_at'] %}
+
+<div class="public-expiry">
+
+🕒 Publish:
+<strong>
+{{ notice['publish_at'] }}
+</strong>
+
+</div>
+
+{% endif %}
+
+
+{% if notice['expiry_date'] %}
+
+<div class="public-expiry">
+
+📅 Expiry:
+<strong>
+{{ notice['expiry_date'] }}
+</strong>
+
+</div>
+
+{% endif %}
+
+
+{% if notice['attachment'] %}
+
+<a
+class="attachment-btn"
+target="_blank"
+href="{{ url_for(
+'static',
+filename='uploads/' + notice['attachment']
+) }}"
+>
+📎 Attachment
+</a>
+
+{% endif %}
+
+
+<div class="notice-meta">
+
+<span class="status status-{{ notice['status']|lower }}">
+{{ notice['status'] }}
+</span>
+
+</div>
+
+
+<div class="actions">
+
+<a
+class="edit"
+href="/edit/{{ notice['id'] }}"
+>
+Edit
+</a>
+
+
+<a
+class="pin-btn"
+href="/pin/{{ notice['id'] }}"
+>
+{% if notice['pinned'] %}
+Unpin
+{% else %}
+📌 Pin
+{% endif %}
+</a>
+
+
+<a
+class="feature-btn"
+href="/feature/{{ notice['id'] }}"
+>
+{% if notice['featured'] %}
+Unfeature
+{% else %}
+⭐ Feature
+{% endif %}
+</a>
+
+
+<a
+class="archive-btn"
+href="/archive/{{ notice['id'] }}"
+>
+{% if notice['status'] == 'Archived' %}
+Unarchive
+{% else %}
+Archive
+{% endif %}
+</a>
+
+
+{% if notice['status'] == 'Trashed' %}
+
+<a
+class="restore-btn"
+href="/restore/{{ notice['id'] }}"
+>
+Restore
+</a>
+
+
+<a
+class="delete"
+href="#"
+data-delete-url="/delete/{{ notice['id'] }}"
+onclick="openDeleteModal(this); return false;"
+>
+Delete Permanently
+</a>
+
+{% else %}
+
+<a
+class="delete"
+href="#"
+data-delete-url="/trash/{{ notice['id'] }}"
+onclick="openDeleteModal(this); return false;"
+>
+Trash
+</a>
+
+{% endif %}
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+
+<div
+id="noSearchResults"
+class="empty-state hidden"
+>
+
+<div>🔍</div>
+
+<h3>
+No matching notices
+</h3>
+
+<p>
+Try changing your filters.
+</p>
+
+</div>
+
+
+</div>
+
+
+<!-- DELETE / TRASH MODAL -->
+
+<div
+id="deleteModal"
+class="modal-overlay"
+>
+
+<div class="delete-modal">
+
+<div class="warning-icon">
+!
+</div>
+
+<h2>
+Are you sure?
+</h2>
+
+<p>
+This notice will be moved to the Trash.
+You can restore it later.
+</p>
+
+<div class="modal-actions">
+
+<button
+class="cancel-btn"
+onclick="closeDeleteModal()"
+>
+Cancel
+</button>
+
+<a
+id="confirmDelete"
+class="confirm-delete"
+href="#"
+>
+Move to Trash
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
+
 </html>
